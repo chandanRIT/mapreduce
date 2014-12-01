@@ -61,8 +61,10 @@ public class Worker implements Runnable {
     		System.out.println("Worker " + socket);
             out = socket.getOutputStream();
             in = socket.getInputStream();
-            wP2P = new WorkerP2P(0, this); // use port + 1 for Wp2p
             id = in.read();  //first thing sent is worker ID
+            wP2P = new WorkerP2P(Utils.BASE_WP2P_PORT+id, this); // use basePort + id as wp2p port
+            out.write(Utils.W2M_WP2P_PORT); out.flush();
+            out.write(Utils.intToByteArray(wP2P.port)); out.flush();
             basePath = Utils.basePath + File.separator + id;
         	baseDir = new File(basePath);
         	if (!baseDir.isDirectory())

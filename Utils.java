@@ -8,9 +8,9 @@ public class Utils {
 	// Flag to turn on/off debug messages (mostly logs) on the server
 	public static final boolean DEBUG = true;
 	
-	public static final int DEF_WP2P_PORT = 40016,
+	public static final int BASE_WP2P_PORT = 40016,
 							DEF_MASTER_PORT = 40001;
-	
+							
 	//Command constants used in network communication
 	public static final byte 
 			C2M_UPLOAD = 'C', 
@@ -27,8 +27,8 @@ public class Utils {
 			M2W_COORD_KEYS = 10,
 			W2W_KEY_TRANSFER_OKAY = 11,
 			W2M_KEYSHUFFLED = 12,
-			M2W_BEGIN_REDUCE = 12;
-
+			M2W_BEGIN_REDUCE = 13,
+			W2M_WP2P_PORT = 14;
 	
 	//Path for flat directory, where each worker stores files
 	public static final String basePath = "temp/";

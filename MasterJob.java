@@ -79,12 +79,12 @@ public class MasterJob<K extends Serializable, V> {
 		}
 		int kIdx = 0, wQIdx = 0;// WorkerConnection currWoker = master.workerQueue.get(0); 
 		for (K key : key_workers_map.keySet()){
-			Object[] transferMessage = new Object[]{key,  //contains key, ipaddress and port to send the key to
+			Object[] transferMessage = new Object[]{key,  //contains key, ipaddress and port to send 
 					master.workerQueue.get(wQIdx).clientSocket.getInetAddress().getHostAddress(),
-					master.workerQueue.get(wQIdx).clientSocket.getPort()}; //TODO: change to wp2p port
+					master.workerIDAndPorts.get(master.workerQueue.get(wQIdx).getId())}; 
 			for (Integer wId : key_workers_map.get(key)){
-				if(wId == master.workerQueue.get(wQIdx).id)//if its the worker to which the key's assigned, then skip
-					continue;
+				//if(wId == master.workerQueue.get(wQIdx).id)//if its the worker to which the key's assigned, then skip
+					//continue;
 				if(worker_messages_map.containsKey(wId)){
 					worker_messages_map.get(wId).add(transferMessage);
 				} else {

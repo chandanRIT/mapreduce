@@ -125,6 +125,17 @@ public class WorkerConnection extends Thread {
 		switch(command) {
 		//this workerconnection is only used for a client to send a MR job to the Master
 		// after which it is shutdown
+		case Utils.W2M_WP2P_PORT:
+			try {
+				byte[] byteArr = new byte[4];
+				in.read(byteArr, 0, 4);
+				master.workerIDAndPorts.put(this.id, Utils.byteArrayToInt(byteArr));
+				//System.out.println("workers port is " + master.workerIDAndPorts.get(this.id));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			break;
 		case Utils.C2M_UPLOAD:	
 			String name = receiveFileFromClient();
 			closeConnection();

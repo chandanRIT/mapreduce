@@ -1,5 +1,6 @@
 package mapreduce;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -11,9 +12,11 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import javax.tools.JavaCompiler;
@@ -32,10 +35,12 @@ public class Master extends Thread {
 	protected List<WorkerConnection> workerQueue; 
 	// Hashtable is synchronized 
 	private Hashtable<Integer, List<String>> fileHashTable;
+	protected Map<Integer, Integer> workerIDAndPorts;
 	
 	public Master(String[] args) throws IOException	{
 		workerQueue = new ArrayList<>();
 		fileHashTable = new Hashtable<>();
+		workerIDAndPorts = new HashMap<>();
 		if (args.length > 0)
 			parseArgs(args);
 		serverSocket = new ServerSocket(port);
@@ -90,7 +95,7 @@ public class Master extends Thread {
 			// TODO when jobs is already > 0 store this job for later
 			if (jobs == 0) {
 				String className = compile(filename);
-				Class<?> myClass = ClassLoader.getSystemClassLoader().loadClass(className); 
+				Class<?> myClass = ClassLoader.getSystemClassLoader().loadClass(new File(filename).getName().split("\\.")[0]); 
 				Mapper<?, ?> mr = (Mapper<?, ?>) myClass.newInstance();
 				mj = new MasterJob<>(mr,this);
 				Path myFile = Paths.get(className + ".class");
@@ -298,7 +303,7 @@ public class Master extends Thread {
 			else if (line[0].equalsIgnoreCase("worker")) { //temp code, just to test WP2P communication
 				try {
 					new WorkerP2P(40013, null).send("Kumar", 
-							Arrays.asList("A", "B", "D"), "127.0.0.1", Utils.DEF_WP2P_PORT);
+							Arrays.asList("A", "B", "D"), "127.0.0.1", Utils.BASE_WP2P_PORT);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
