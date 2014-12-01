@@ -42,7 +42,9 @@ public class MasterJob<K extends Serializable, V> {
 		if(key_workers_map.containsKey(key)){
 			key_workers_map.get(key).add(id); // append worker ID its corresponding key mapping
 		} else {
-			key_workers_map.put(key, Arrays.asList(id));
+			List<Integer> list = new ArrayList<>();
+			list.add(id);
+			key_workers_map.put(key, list);
 		}
 	}
 	

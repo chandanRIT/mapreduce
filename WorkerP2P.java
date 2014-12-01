@@ -57,7 +57,7 @@ public class WorkerP2P extends Thread {
 						Object[] objArr = (Object[])objInStream.readObject();
 						objInStream = null;
 						
-						out.write(Utils.W2W_KEY_TRANSFER_OKAY); out.flush();
+						out.write(Utils.W2W_KEY_TRANSFER_OKAY); out.flush(); // to sync on all receives from a worker
 						
 						worker.currentJob.receiveKVAndAggregate(objArr[0], objArr[1]);
 						//K key = (K)objArr[0];

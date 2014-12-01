@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.net.InetAddress;
@@ -115,6 +116,17 @@ public class Worker implements Runnable {
     		System.err.println("Error writing to Master: closing connection.");
     		this.closeConnection();
     	}
+    }
+    
+    public void writeObjToMaster(final Object obj) {
+    	try {
+    		ObjectOutputStream objStream = new ObjectOutputStream(out);
+    		objStream.writeObject(obj);
+    		objStream.flush();
+    	} catch (IOException e) {
+    		System.err.printf("Error writing to Worker %d: closing connection%n", id);
+    		closeConnection();
+    	}				
     }
     
     public synchronized boolean isStopped() {

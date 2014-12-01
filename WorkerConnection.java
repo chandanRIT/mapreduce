@@ -5,11 +5,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -152,19 +154,26 @@ public class WorkerConnection extends Thread {
 			break;
 		case Utils.W2M_KEYSHUFFLED:
 			master.mj.wShuffleCount++;
-			if(master.mj.wShuffleCount == master.workerQueue.size())
-				new Thread(new Runnable(){
-					public void run(){
+			if(master.mj.wShuffleCount == master.workerQueue.size()){
 						master.writeAllWorkers(Utils.M2W_BEGIN_REDUCE);
-					}
-					
-				}).start();
+			}
 			break;
+			
 		case Utils.W2M_RESULTS:
-			master.mj.receiveWorkerResults(readBytes());
+			master.mj.receiveWorkerResults(in);
 			break;
+		
+		case Utils.W2M_JOBDONE:
+			master.mj.wDones++;
+			if (master.mj.wDones == master.workerQueue.size()){
+				System.out.println("***Results***");
+				master.mj.printResults();
+			}
+			break;
+			
 		default:
 			System.err.println("Invalid command received on WorkerConnection: " + command);
+			this.closeConnection();
 			break;
 		}
 	} 

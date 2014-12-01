@@ -22,7 +22,7 @@ import java.util.Scanner;
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
 
-import com.sun.org.apache.xalan.internal.xsltc.compiler.CompilerException;
+//import com.sun.org.apache.xalan.internal.xsltc.compiler.CompilerException;
 
 public class Master extends Thread {
 
@@ -119,8 +119,8 @@ public class Master extends Thread {
 	protected String compile(String filename){
 		try {	
 			JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();  
-			if (compiler == null)  // needs to be a JDK java.exe to have a compiler attached
-				throw new CompilerException("Error: no compiler set for MR file");
+			//if (compiler == null)  // needs to be a JDK java.exe to have a compiler attached
+				//throw new CompilerException("Error: no compiler set for MR file");
 			int compilationResult = compiler.run(null, null, null, filename);  
 			System.err.println(filename + " compilation " + (compilationResult==0?"successful":"failed"));
 			return filename.split("\\.")[0];  // class name is before ".java"

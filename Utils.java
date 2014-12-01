@@ -28,7 +28,9 @@ public class Utils {
 			W2W_KEY_TRANSFER_OKAY = 11,
 			W2M_KEYSHUFFLED = 12,
 			M2W_BEGIN_REDUCE = 13,
-			W2M_WP2P_PORT = 14;
+			W2M_WP2P_PORT = 14,
+			W2M_REDUCEDKV = 15,
+			W2M_JOBDONE = 16;
 	
 	//Path for flat directory, where each worker stores files
 	public static final String basePath = "temp/";
